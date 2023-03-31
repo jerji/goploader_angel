@@ -77,6 +77,16 @@ function getsum() {
     return sum
 }
 
+function isValidHttpUrl(string) {
+    let url
+    try {
+        url = new URL(string);
+    } catch (_) {
+        return false;
+    }
+    return url.protocol === "http:" || url.protocol === "https:";
+}
+
 $('#language').change(function() {
     var lang = $('#language').val();
     var segments = finalurl.pathname.split("/").length - 1;
@@ -134,7 +144,7 @@ $('#one-view').change(function() {
 
 $('#source').change(function() {
     if ($('#source').is(":checked")) {
-        sourcelabel.text("Text");
+        sourcelabel.text("Text/Link");
         filelabel.fadeOut(200, function() {
             uploadsum.text(getsum());
             $('#upload-text').fadeIn(200);
@@ -167,7 +177,14 @@ $('#upload-btn').click(function($e) {
             toastr.success('Please paste some text')
             return
         }
-        data.append('file', new File([new Blob([$("#upload-text").val()])], "stdin"));
+        let value
+        if (isValidHttpUrl($("#upload-text").val())){
+            value = "<!DOCTYPE html><meta http-equiv=\"refresh\" content=\"0;url=" + $("#upload-text").val() + "\" />"
+        }else{
+            value = $("#upload-text").val()
+        }
+        data.append('file', new File([new Blob([value])], "stdin"));
+
     } else {
         if ($("#upload-file")[0].files.length != 1) {
             toastr.success('Please select a file');
@@ -259,7 +276,7 @@ $(document).ready(function() {
         oneviewlabel.text("No Restriction");
     }
     if ($('#source').is(":checked")) {
-        sourcelabel.text("Text");
+        sourcelabel.text("Text/Link");
         filelabel.fadeOut(200, function() {
             $('#upload-text').fadeIn(200);
         });
