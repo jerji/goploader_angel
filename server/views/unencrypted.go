@@ -123,6 +123,7 @@ func HandleRequest(c *gin.Context, isView bool) {
 	file := path.Join(conf.C.UploadDir, re.Key)
 	if _, err := os.Stat(file); err != nil {
 		logger.ErrC(c, "server", fmt.Sprintf("Couldn't open %s", re.Key), err)
+		re.Delete()
 		c.AbortWithStatus(http.StatusInternalServerError)
 		return
 	}
@@ -169,6 +170,7 @@ func ViewCode(c *gin.Context) {
 	f, err := os.Open(path.Join(conf.C.UploadDir, re.Key))
 	if err != nil {
 		logger.ErrC(c, "server", fmt.Sprintf("Couldn't open %s", re.Key), err)
+		re.Delete()
 		c.AbortWithStatus(http.StatusInternalServerError)
 		return
 	}
