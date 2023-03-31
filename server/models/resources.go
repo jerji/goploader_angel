@@ -28,6 +28,7 @@ var DurationMap = map[string]time.Duration{
 	"6h":  6 * time.Hour,
 	"1d":  24 * time.Hour,
 	"1w":  24 * time.Hour * 7,
+	"10y": 87660 * time.Hour,
 }
 
 // Resource represents the data stored in the database
