@@ -218,7 +218,7 @@ $('#upload-btn').click(function($e) {
 
                     return xhr;
                 },
-                url: '/',
+                url: window.location.href,
                 data: data,
                 cache: false,
                 contentType: false,
